@@ -1,12 +1,12 @@
-# This python file will be used in order to send mail when an 
+# This python file will be used in order to send mail when an
 # unrecognized face is detected
 # Kirk Fay 11/28/19
 import smtplib
 def send():
-    admin_account = 'FacialRecognitionProjectAI@gmail.com'
-    admin_password = 'rd5Yq82AfLU0'    
+    admin_account = 'INSERTADMINMAILHERE'
+    admin_password = 'INSERTPASSHERE'
     sent_from = admin_account
-    to = 'kirkfay55@gmail.com'
+    to = 'INSERTMAILHERE'
     subject = 'Unverified user detected!'
     body = "Please take appropriate action.\n\n"
 
