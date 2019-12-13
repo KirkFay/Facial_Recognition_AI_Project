@@ -1,6 +1,7 @@
 import face_recognition
-import cv2
+from cv2 import *
 import numpy as np
+#import mail_send as mail
 import sendmail as mail
 import time
 
@@ -8,11 +9,11 @@ import time
 video_capture = cv2.VideoCapture(0)
 
 # Load a sample picture and learn how to recognize it.
-kirk_image = face_recognition.load_image_file("kirk.jpg")
+kirk_image = face_recognition.load_image_file("./known/kirk.jpg")
 kirk_face_encoding = face_recognition.face_encodings(kirk_image)[0]
 
 # Load a second sample picture and learn how to recognize it.
-chet_image = face_recognition.load_image_file("chet.jpg")
+chet_image = face_recognition.load_image_file("./known/chet.jpg")
 chet_face_encoding = face_recognition.face_encodings(chet_image)[0]
 
 # Create arrays of known face encodings and their names
@@ -52,13 +53,13 @@ while True:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-
+        imwrite("intruder_img.jpg",frame)
         face_names = []
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
             name = "Unknown"
-            
+
             # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
@@ -66,7 +67,7 @@ while True:
                 name = known_face_names[best_match_index]
             else:
                 secondTime = time.time()
-                if status == True and ((secondTime - firstTime) > 300): 
+                if status == True and ((secondTime - firstTime) > 300):
                     firstTime = time.time()
                     secondTime = time.time()
                     mail.send()
@@ -75,7 +76,7 @@ while True:
                     secondTime = time.time()
                     mail.send()
             face_names.append(name)
-            
+
     process_this_frame = not process_this_frame
 
 
